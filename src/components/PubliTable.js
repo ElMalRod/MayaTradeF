@@ -7,24 +7,85 @@ import axios from 'axios';
 
 const PubliTable = () => {
     const [productos, setProductos] = useState([]);
+    const [servicios, setServicios] = useState([]);
+
     useEffect(() => {
         // Hacer la solicitud GET para obtener la lista de productos
         axios.get('http://127.0.0.1:8000/api/products')
             .then(response => {
-                setProductos(response.data.products);
+                const productosConType = response.data.products.map(producto => ({
+                    ...producto,
+                    type: 'product' // Agregar el tipo 'product' a cada producto
+                }));
+                setProductos(productosConType);
             })
             .catch(error => {
                 console.error('Error fetching productos:', error);
             });
-    }, []); 
+    
+        // Hacer la solicitud GET para obtener la lista de servicios
+        axios.get('http://127.0.0.1:8000/api/services')
+            .then(response => {
+                const serviciosConType = response.data.services.map(servicio => ({
+                    ...servicio,
+                    type: 'service' // Agregar el tipo 'service' a cada servicio
+                }));
+                setServicios(serviciosConType);
+            })
+            .catch(error => {
+                console.error('Error fetching servicios:', error);
+            });
+    }, []);
+    
 
-    const handleApproval = (productId) => {
-        
-    };
 
-    const handleDenial = (productId) => {
-       
+    const handleApproval = (productId, type) => {
+        const url = `http://127.0.0.1:8000/api/${type === 'product' ? 'products' : 'services'}/${productId}/approve`;
+    
+        axios.put(url)
+            .then(response => {
+                updateState(productId, type, true);
+            })
+            .catch(error => {
+                console.error('Error al aprobar la publicación:', error);
+            });
     };
+    
+    const handleDenial = (productId, type) => {
+        console.log('Denying:', productId, type);
+        const url = `http://127.0.0.1:8000/api/${type === 'product' ? 'products' : 'services'}/${productId}/reject`;
+    
+        axios.put(url)
+            .then(response => {
+                updateState(productId, type, false);
+            })
+            .catch(error => {
+                console.error('Error al rechazar la publicación:', error);
+            });
+    };    
+    
+    const updateState = (productId, type, approved) => {
+        if (type === 'product') {
+            const updatedProductos = productos.map(producto => {
+                if (producto.id === productId) {
+                    return { ...producto, approved };
+                }
+                return producto;
+            });
+            setProductos(updatedProductos);
+        } else {
+            const updatedServicios = servicios.map(servicio => {
+                if (servicio.id === productId) {
+                    return { ...servicio, approved };
+                }
+                return servicio;
+            });
+            setServicios(updatedServicios);
+        }
+    };
+    
+
+    const publicaciones = [...productos, ...servicios];
 
     return (
         <div>
@@ -74,8 +135,8 @@ const PubliTable = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {productos.map(producto => (
-                                    <tr key = {producto.id}>
+                                {publicaciones.map(publicacion => (
+                                    <tr key = {publicacion.id}>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <div class="flex">
                                                 <div class="flex-shrink-0 w-10 h-10">
@@ -87,47 +148,56 @@ const PubliTable = () => {
                                                 </div>
                                                 <div class="ml-3">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {producto.userName}
+                                                        {publicacion.userName}
                                                     </p>
-                                                    <p class="text-gray-600 whitespace-no-wrap"> </p>
+                                                    <p class="text-gray-600 whitespace-no-wrap">{publicacion.type}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                {producto.name}
+                                                {publicacion.name}
                                             </p>
                                             <p class="text-gray-600 whitespace-no-wrap">
-                                                {producto.description}
+                                                {publicacion.description}
                                             </p>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                {producto.price}
+                                                {publicacion.price}
                                             </p>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span
-                                                class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                                                class={`relative inline-block px-3 py-1 font-semibold ${
+                                                    publicacion.approved ? 'text-green-900' : 'text-orange-900'
+                                                } leading-tight`}
                                             >
                                                 <span
                                                     aria-hidden
-                                                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                                                    class={`absolute inset-0 ${
+                                                        publicacion.approved ? 'bg-green-200' : 'bg-orange-200'
+                                                    } opacity-50 rounded-full`}
                                                 ></span>
-                                                <span class="relative">
-                                                    {producto.approved ? 'Correcto' : 'Reportado'}
-                                                </span>
+                                                <span class="relative">{publicacion.approved ? 'Aprobada' : 'Pendiente'}</span>
                                             </span>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">
-                                            <button class="text-green-900 hover:text-green-500 whitespace-no-wrap">
-                                                <CheckCircleOutlineIcon />
-                                            </button>
+                                                <button
+                                                    class="text-green-900 hover:text-green-500 whitespace-no-wrap"
+                                                    onClick={() => handleApproval(publicacion.id, publicacion.type)}
+                                                >
+                                                    <CheckCircleOutlineIcon />
+                                                </button>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">
-                                            <button class="text-red-800 hover:text-red-600 whitespace-no-wrap">
+                                                <button
+                                                class="text-red-800 hover:text-red-600 whitespace-no-wrap"
+                                                onClick={() => handleDenial(publicacion.id, publicacion.type)}
+                                            >
                                                 <RemoveCircleOutlineIcon />
                                             </button>
+
                                         </td>
                                         <td
                                             class="px-5 py-5 border-b border-gray-200 bg-white text-lg text-right"

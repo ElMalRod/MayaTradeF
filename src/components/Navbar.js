@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import logo from "../assets/1.png";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import RuleIcon from '@mui/icons-material/Rule';
 import ReportIcon from '@mui/icons-material/Report';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-function Navbar({ handleShowPubliTable, handleShowUsersTable }) {
-  const [userRole, setUserRole] = useState('');
-  
-  useEffect(() => {
-    const storedUserRole = localStorage.getItem('userRole');
-    setUserRole(storedUserRole);
-  }, []);
-
-  const navigateToAdminUsersSection = () => {
-    handleShowUsersTable(); // Mostrar tabla de usuarios
-  };
+function Navbar({ handleShowPubliTable, handleShowUsersTable, handleShowReportedTable }) {
 
   const navigateToAdminPubliSection = () => {
-    handleShowPubliTable(); // Mostrar tabla de publicaciones
+    handleShowPubliTable(); // Mostrar tabla de solicitudes
+  };
+
+  const navigateToReportSection = () => {
+    handleShowReportedTable(); // Mostrar tabla de reportes
   };
 
   return (
@@ -38,7 +32,7 @@ function Navbar({ handleShowPubliTable, handleShowUsersTable }) {
         <p className="pl-2"> Solicitudes </p>
       </div>
 
-      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={navigateToAdminPubliSection}>
+      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={navigateToReportSection}>
         <ReportIcon/>
         <p className="pl-2"> Reportes</p>
       </div>
@@ -49,12 +43,12 @@ function Navbar({ handleShowPubliTable, handleShowUsersTable }) {
         Administrar Usuarios
       </div>
 
-      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={navigateToAdminUsersSection}>
+      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={handleShowUsersTable}>
         <PersonAddIcon/>
         <p className="pl-2"> Solicitudes</p>
       </div>
 
-      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={navigateToAdminUsersSection}>
+      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" onClick={handleShowUsersTable}>
         <ReportIcon/>
         <p className="pl-2"> Reportes</p>
       </div>

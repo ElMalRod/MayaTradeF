@@ -3,7 +3,7 @@ import axios from "axios";
 import PublicacionComponent from "./PublicacionComponent";
 import { useParams } from "react-router-dom";
 
-const PublicacionesList = () => { // Cambiar el nombre del componente
+const PublicacionesList = () => {
   const [products, setProducts] = useState([]);
   const [services, setServices] = useState([]);
 
@@ -33,21 +33,27 @@ const PublicacionesList = () => { // Cambiar el nombre del componente
     <div className="w-full">
       <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 place-content-start justify-items-center gap-2 pt-2 ">
         {/* Mostrar productos */}
-        {products.map((product) => (
-          <PublicacionComponent
-            key={product.id}
-            product={product}
-            type= 'Producto'
-          />
-        ))}
+        {products.map((product) =>
+          // Verificar si el producto está aprobado
+          product.approved === 1 && (
+            <PublicacionComponent
+              key={product.id}
+              product={product}
+              type="Producto"
+            />
+          )
+        )}
         {/* Mostrar servicios */}
-        {services.map((service) => (
-          <PublicacionComponent
-            key={service.id}
-            product={service}
-            type='Servicio'
-          />
-        ))}
+        {services.map((service) =>
+          // Verificar si el servicio está aprobado
+          service.approved === 1 && (
+            <PublicacionComponent
+              key={service.id}
+              product={service}
+              type="Servicio"
+            />
+          )
+        )}
       </div>
     </div>
   );

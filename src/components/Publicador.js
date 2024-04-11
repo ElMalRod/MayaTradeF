@@ -82,7 +82,7 @@ const Publicador = () => {
   };
 
   return (
-    <div className="bg-red-300 rounded-lg shadow-md p-4">
+    <div className=" rounded-lg shadow-md p-4">
       <form onSubmit={handleSubmit}>
         <div className="flex items-center">
           <input
