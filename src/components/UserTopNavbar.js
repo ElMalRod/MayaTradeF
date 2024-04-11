@@ -10,8 +10,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Modal from "../views/Modal";
 import Alert from "@material-ui/lab/Alert";
+import mayacoinImage from "../assets/mayacoin.png";
 
-const TopNavbar = () => {
+const UserTopNavbar = () => {
   const [openModal, setOpenModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -19,6 +20,7 @@ const TopNavbar = () => {
   const [isWrongPasswordAlertVisible, setWrongPasswordAlertVisible] = useState(false);
   const [timerId, setTimerId] = useState(null);
   const [isChangingPassword, setChangingPassword] = useState(false);
+  const [userBalance, setUserBalance] = useState(0);
   const [username, setUsername] = useState('');
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -26,15 +28,18 @@ const TopNavbar = () => {
   useEffect(() => {
     const storedUsername = localStorage.getItem('userName');
     setUsername(storedUsername);
+
+    const userBalance = localStorage.getItem('userBalance');
+    setUserBalance(parseFloat(userBalance) || 0); 
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('userName');
-    localStorage.removeItem('directoryId');
     localStorage.removeItem('userRole');
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('userBalance');
+
     window.location.href = '/';
   };
 
@@ -90,6 +95,10 @@ const TopNavbar = () => {
       </form>
       <div className="flex items-center gap-2 text-xl text-gray-500 z-400">
       <p>{localStorage.getItem('userName')}</p>
+      <div className="flex items-center">
+          <img src={mayacoinImage} alt="MayaCoin" className="w-6 h-6 mr-1" /> {/* Mostrar la imagen de la moneda */}
+          <p>{userBalance}</p> {/* Mostrar el saldo del usuario */}
+        </div>
         <div className="text-3xl pr-4">
           <Button
             ref={anchorRef}
@@ -179,4 +188,4 @@ const TopNavbar = () => {
   );
 };
 
-export default TopNavbar;
+export default UserTopNavbar;

@@ -27,10 +27,11 @@ const Login = () => {
       });
 
       console.log('Inicio de sesión exitoso:', response.data);
-
+      localStorage.setItem('userId', response.data.id);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userName', response.data.name);
       localStorage.setItem('userRole', response.data.role);
+      localStorage.setItem('userBalance', response.data.saldo);
 
       // Redirigir al usuario según su rol
       switch (response.data.role) {
@@ -40,8 +41,8 @@ const Login = () => {
         case 'Vendedor':
           window.location.href = '/vendedor';
           break;
-        case 'Comprador':
-          window.location.href = '/comprador';
+        case 'Publicador':
+          window.location.href = '/publicador';
           break;
         default:
           window.location.href = '/visitante';

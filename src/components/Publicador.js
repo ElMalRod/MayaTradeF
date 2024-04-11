@@ -1,5 +1,7 @@
+// Publicador.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Publicador = () => {
   const [formData, setFormData] = useState({
@@ -7,14 +9,22 @@ const Publicador = () => {
     description: '',
     price: '',
     image: null,
+    tipo: '', 
+    approved: 1,
+    available: 1, 
+    active: 1
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newValue = name === 'approved' || name === 'available' ? e.target.checked : value;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     });
   };
+  
 
   const handleImageChange = (e) => {
     setFormData({
@@ -35,23 +45,44 @@ const Publicador = () => {
       formDataToSend.append('description', formData.description);
       formDataToSend.append('price', formData.price);
       formDataToSend.append('image', formData.image);
+      formDataToSend.append('tipo', formData.tipo); 
+      formDataToSend.append('approved', formData.approved); 
+      formDataToSend.append('available', formData.available);
+      formDataToSend.append('active', formData.active); 
 
-      const response = await axios.post('http://127.0.0.1:8000/api/products', formDataToSend, {
+      const endpoint = formData.tipo === 'servicio' ? 'services' : 'products';
+
+      const response = await axios.post(`http://127.0.0.1:8000/api/${endpoint}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       console.log('Producto publicado:', response.data);
-      // Aquí podrías mostrar un mensaje de éxito o redirigir a otra página
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto publicado',
+        text: 'Tu producto ha sido publicado con éxito',
+      });
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000); 
+
     } catch (error) {
       console.error('Error al publicar el producto:', error);
-      // Aquí podrías mostrar un mensaje de error al usuario
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al publicar el producto',
+        text: 'Ocurrió un error al publicar tu producto',
+      });
+
     }
+   
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-red-300 rounded-lg shadow-md p-4">
       <form onSubmit={handleSubmit}>
         <div className="flex items-center">
           <input
@@ -72,6 +103,17 @@ const Publicador = () => {
           className="w-full mt-2 border-none focus:outline-none resize-none"
           required
         />
+        <select
+          name="tipo"
+          value={formData.tipo}
+          onChange={handleChange}
+          className="w-full mt-2 border-none focus:outline-none"
+          required
+        >
+          <option value="">Selecciona tipo</option>
+          <option value="servicio">Servicio</option>
+          <option value="producto">Producto</option>
+        </select>
         <input
           type="number"
           name="price"
@@ -86,7 +128,6 @@ const Publicador = () => {
           accept="image/*"
           onChange={handleImageChange}
           className="w-full mt-2 border-none focus:outline-none"
-          required
         />
         <button
           type="submit"

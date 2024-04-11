@@ -16,8 +16,13 @@
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    width: 80%; /* Puedes ajustar el ancho según tus necesidades */
-    max-width: 800px; /* Puedes ajustar el ancho máximo según tus necesidades */
-    max-height: 80%; /* Puedes ajustar la altura máxima según tus necesidades */
-    overflow-y: auto; /* Añade desplazamiento vertical si el contenido es demasiado largo */
+    width: 80%; 
+    max-width: 800px; 
+    max-height: 80%; 
+    overflow-y: auto; 
+  }
+
+  .gradient-custom {
+
+    background-blend-mode: screen, color-dodge, overlay, difference, normal;
   }
