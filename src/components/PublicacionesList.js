@@ -12,7 +12,8 @@ const PublicacionesList = () => {
     axios
       .get("http://127.0.0.1:8000/api/products")
       .then((response) => {
-        setProducts(response.data.products);
+        const availableProducts = response.data.products.filter(product => product.approved && product.available);
+        setProducts(availableProducts);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);

@@ -12,7 +12,11 @@ const TablePublicReport = () => {
         // Hacer la solicitud GET para obtener la lista de productos reportados
         axios.get('http://127.0.0.1:8000/api/products/reported')
             .then(response => {
-                setReportedProducts(response.data.reported_products);
+                const productosConType = response.data.reported_products.map(producto => ({
+                    ...producto,
+                    type: 'product' // Agregar el tipo 'product' a cada producto
+                }));
+                setReportedProducts(productosConType);
             })
             .catch(error => {
                 console.error('Error fetching reported products:', error);
@@ -21,13 +25,18 @@ const TablePublicReport = () => {
         // Hacer la solicitud GET para obtener la lista de servicios reportados
         axios.get('http://127.0.0.1:8000/api/services/reported')
             .then(response => {
-                setReportedServices(response.data.reported_services);
+                const serviciosConType = response.data.reported_services.map(servicio => ({
+                    ...servicio,
+                    type: 'service' // Agregar el tipo 'service' a cada servicio
+                }));
+                setReportedServices(serviciosConType);
             })
             .catch(error => {
                 console.error('Error fetching reported services:', error);
             });
 
     }, []);
+    
 
     const handleApproval = (id, type) => {
         const url = `http://127.0.0.1:8000/api/${type === 'product' ? 'products' : 'services'}/${id}/approve`;
@@ -44,6 +53,7 @@ const TablePublicReport = () => {
     const handleDenial = (id, type) => {
         const url = `http://127.0.0.1:8000/api/${type === 'product' ? 'products' : 'services'}/${id}`;
 
+        
         axios.delete(url)
             .then(response => {
                 if (type === 'product') {

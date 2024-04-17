@@ -38,11 +38,14 @@ const Login = () => {
         case 'Administrador':
           window.location.href = '/admin';
           break;
-        case 'Vendedor':
-          window.location.href = '/vendedor';
+        case 'Comprador':
+          window.location.href = '/comprador';
           break;
         case 'Publicador':
           window.location.href = '/publicador';
+          break;
+        case 'Visitante':
+          window.location.href = '/visitante';
           break;
         default:
           window.location.href = '/visitante';

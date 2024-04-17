@@ -27,11 +27,8 @@ function ViewAdmin() {
   return (
     <div className="h-screen w-screen flex flex-row-reverse overflow-x-hidden">
       <div className='w-[85%] bg-[white] flex flex-col-reverse'>
-        <div className='h-[1000000%]'>
+      <div className='h-[100%] overflow-auto'>
           {showUsersTable ? <UsersTable /> : showReportedTable ? <TablePublicReport /> : <PubliTable />} {/* Mostrar la tabla según el estado */}
-        </div>
-        <div className='h-[15%]'>
-          {/* Footer */}
         </div>
         <TopNavbar />
       </div>

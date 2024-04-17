@@ -1,26 +1,24 @@
 import React, { } from 'react';
-import Navbar from '../components/UserNavbar';
+import VisitanteNavbar from '../components/VisitanteNavbar';
 import TopNavbar from '../components/UserTopNavbar';
-import Publicador from '../components/Publicador';
 import PublicacionesList from '../components/PublicacionesList';
 
 
-function ViewUser() {
+function ViewVisitante() {
   return (
     <div className="h-screen w-screen flex flex-row-reverse overflow-x-hidden">
     <div className='w-[85%] bg-[white] flex flex-col-reverse'>
         <div className='h-[100%] overflow-auto'>
             {/* Contenido */}
-            <Publicador />
             <PublicacionesList />
         </div>
      <TopNavbar />
     </div>
     <div className='w-[15%] bg-[#F6F5F5]'>
-      <Navbar />
+      <VisitanteNavbar />
     </div>
   </div>
   );
 }
 
-export default ViewUser;
+export default ViewVisitante;
