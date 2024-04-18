@@ -14,7 +14,7 @@ const ServicesList = () => {
                 setServices(response.data.services);
             })
             .catch((error) => {
-                console.error("Error fetching services:", error);
+                console.error("Error al recuperar services:", error);
             });
 
     }, []);

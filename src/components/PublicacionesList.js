@@ -16,7 +16,7 @@ const PublicacionesList = () => {
         setProducts(availableProducts);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
+        console.error("Error al recuperar productos:", error);
       });
 
     // Obtener servicios
@@ -26,7 +26,7 @@ const PublicacionesList = () => {
         setServices(response.data.services);
       })
       .catch((error) => {
-        console.error("Error fetching services:", error);
+        console.error("Error al obtener servicios:", error);
       });
   }, []);
 

@@ -122,7 +122,7 @@ const PublicacionComponent = ({ type, product }) => {
       .then(response => {
         const { balance } = response.data;
         localStorage.setItem('userBalance', balance);  // Assume 'userBalance' is your key for storing user balance
-        Swal.fire("Balance Updated", `Your new balance is $${balance}`, "success");
+        Swal.fire("Saldo actualizado", `Tu nuevo saldo es Q.${balance}`, "success");
       })
       .catch(error => {
         console.error('Error fetching new balance:', error);
@@ -133,7 +133,21 @@ const PublicacionComponent = ({ type, product }) => {
   const handleBuyProduct = async (productId) => {
     const userName = localStorage.getItem('userName');
     if (!userName) {
-        alert("Usuario no identificado. Por favor, inicie sesión.");
+        Swal.fire({
+            icon: 'error',
+            title: 'No Autenticado',
+            text: 'Usuario no identificado. Por favor, inicie sesión.',
+        });
+        return;
+    }
+
+    // Prevent user from buying their own product
+    if (userName === product.userName) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Operación No Permitida',
+            text: 'No puedes comprar tu propio producto.',
+        });
         return;
     }
 
@@ -144,12 +158,12 @@ const PublicacionComponent = ({ type, product }) => {
             title: 'Compra Exitosa',
             text: response.data.message,
         });
-        updateLocalBalance();
+        updateLocalBalance(); // Assume this function correctly updates the local balance and alerts the user
         setTimeout(() => {
-            window.location.reload();
-        } , 2000);
+            window.location.reload(); // Refresh the page to reflect new data
+        }, 2000);
     } catch (error) {
-        console.error('Error buying product:', error);
+        console.error('Error al Comprar:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error al Comprar',
@@ -157,6 +171,28 @@ const PublicacionComponent = ({ type, product }) => {
         });
     }
 };
+
+const handleAcquireService = async (serviceId) => {
+  if (!currentUser) {
+    Swal.fire("No autenticado", "Por favor inicie sesión para continuar.", "error");
+    return;
+  }
+
+  if (currentUser === product.userName) {
+    Swal.fire("Operacion no permitida", "No puedes adquirir tu propio servicio.", "error");
+    return;
+  }
+
+  try {
+    const response = await axios.post(`http://127.0.0.1:8000/api/services/${serviceId}/acquire`, { userName: currentUser });
+    Swal.fire("Servicio adquirido", response.data.message, "success");
+    updateLocalBalance();
+    setTimeout(() => window.location.reload(), 2000);
+  } catch (error) {
+    Swal.fire("Adquisición fallida", error.response?.data?.error || "Un error desconocido ocurrió.", "error");
+  }
+};
+
 
 
   return (
@@ -214,7 +250,7 @@ const PublicacionComponent = ({ type, product }) => {
               <ForumIcon  className="text-sm text-neutral-500"/>
             </Button>
             <Button>
-              <AddShoppingCartIcon  className="text-sm text-neutral-500"  onClick={() => handleBuyProduct(product.id)}/>
+              <AddShoppingCartIcon className="text-sm text-neutral-500" onClick={() => type === 'Producto' ? handleBuyProduct(product.id) : handleAcquireService(product.id)}/>
             </Button>
           </div>
         </div>

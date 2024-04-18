@@ -14,7 +14,7 @@ const UsersTable = () => {
                 setUsers(response.data.users);
             })
             .catch(error => {
-                console.error('Error fetching users:', error);
+                console.error('Error al recuperar usuarios:', error);
             });
     }, []); 
 
@@ -27,7 +27,7 @@ const UsersTable = () => {
                 setUsers(users.map(user => user.id === userId ? response.data.user : user));
             })
             .catch(error => {
-                console.error('Error approving user:', error);
+                console.error('Error al aprobar usuario:', error);
             });
     };
 
@@ -39,7 +39,7 @@ const UsersTable = () => {
                 setUsers(users.map(user => user.id === userId ? response.data.user : user));
             })
             .catch(error => {
-                console.error('Error denying user:', error);
+                console.error('Error al negar al usuario:', error);
             });
     };
 

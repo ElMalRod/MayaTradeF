@@ -15,7 +15,7 @@ const ProductList = () => {
           setProducts(availableProducts);
         })
         .catch((error) => {
-          console.error("Error fetching products:", error);
+          console.error("Error al recuperar productos: ", error);
         });
 
     }, []);

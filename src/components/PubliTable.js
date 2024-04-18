@@ -20,7 +20,7 @@ const PubliTable = () => {
                 setProductos(productosConType);
             })
             .catch(error => {
-                console.error('Error fetching productos:', error);
+                console.error('Error al recuperar productos:', error);
             });
     
         // Hacer la solicitud GET para obtener la lista de servicios
@@ -33,7 +33,7 @@ const PubliTable = () => {
                 setServicios(serviciosConType);
             })
             .catch(error => {
-                console.error('Error fetching servicios:', error);
+                console.error('Error al recuperar servicios:', error);
             });
     }, []);
     

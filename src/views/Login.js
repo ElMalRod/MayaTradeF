@@ -44,11 +44,6 @@ const Login = () => {
         case 'Publicador':
           window.location.href = '/publicador';
           break;
-        case 'Visitante':
-          window.location.href = '/visitante';
-          break;
-        default:
-          window.location.href = '/visitante';
       }
 
     } catch (error) {
@@ -113,7 +108,21 @@ const Login = () => {
                 ¿No tienes una cuenta?{' '}
                 <a href="/register" className="text-blue-500 hover:underline">Registrarse</a>
               </div>
+
+
             </form>
+
+            <div className='mt-24 flex justify-end'>
+              <a
+                className="flex items-center justify-between  px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-teal-500 rounded-lg hover:bg-teal-400 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-50"
+                href="/visitante"
+              >
+                <span>Ingresar como invitado</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 rtl:-scale-x-100" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>

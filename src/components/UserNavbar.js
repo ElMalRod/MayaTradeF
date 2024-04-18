@@ -86,10 +86,11 @@ function UserNavbar({handleShowProducts}) {
         <p className="pl-2"> Servicios</p>
       </a>
 
-      <div className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" >
+      <a className="h-[25px] w-full cursor-pointer hover:bg-gray-300 rounded-xl mx-2 flex items-center p-4" href='/publicador/voluntariado' >
         <VolunteerActivismIcon className="text-gray-600" />
         <p className="pl-2"> Voluntariado</p>
-      </div>
+      </a>
+      
 
       {/* Modal de Pago */}
       <Modal isOpen={isPaymentModalOpen} onClose={handlePaymentModalClose}>

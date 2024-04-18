@@ -25,7 +25,7 @@ const MensajeDirectoModal = ({ isOpen, onClose, recipientName, productName }) =>
             Swal.fire('Enviado!', 'Tu mensaje ha sido enviado.', 'success');
             onClose(); // Cerrar el modal después de enviar
         }).catch(error => {
-            console.error('Error sending message:', error);
+            console.error('Error al enviar mensaje:', error);
             Swal.fire('Error!', 'No se pudo enviar el mensaje.', 'error');
         });
     };

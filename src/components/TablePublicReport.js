@@ -19,7 +19,7 @@ const TablePublicReport = () => {
                 setReportedProducts(productosConType);
             })
             .catch(error => {
-                console.error('Error fetching reported products:', error);
+                console.error('Error al recuperar los productos reportados:', error);
             });
 
         // Hacer la solicitud GET para obtener la lista de servicios reportados
@@ -32,7 +32,7 @@ const TablePublicReport = () => {
                 setReportedServices(serviciosConType);
             })
             .catch(error => {
-                console.error('Error fetching reported services:', error);
+                console.error('Error al recuperar los servicios reportados:', error);
             });
 
     }, []);
@@ -46,7 +46,7 @@ const TablePublicReport = () => {
                 // Actualizar el estado después de la aprobación
             })
             .catch(error => {
-                console.error('Error approving publication:', error);
+                console.error('Error al aprobar la publicación:', error);
             });
     };
 
@@ -67,7 +67,7 @@ const TablePublicReport = () => {
                 }
             })
             .catch(error => {
-                console.error('Error deleting publication:', error);
+                console.error('Error al eliminar la publicación:', error);
             });
     };
 
